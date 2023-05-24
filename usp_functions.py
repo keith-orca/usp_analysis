@@ -26,7 +26,7 @@ def get_parameter_combinations(vpp, f_mod):
     return combinations, vpp_set, f_mod_set
 
 
-def get_combination_means(vpp, f_mod, photometry_data, output_name=False):
+def get_combination_means(vpp, f_mod, photometry_data, output_name=False, write_raw_combinations=False):
     # sorts 2D photometry arrays by indexed vpp f_mod combination and averages within the sorted groups.
     # This can be used on 2D (photometry fluorescence data) or 1D arrays (slice mean arrays)
 
@@ -50,6 +50,11 @@ def get_combination_means(vpp, f_mod, photometry_data, output_name=False):
             combinations[i].append(combination_means[i])
 
         usp_file_writing.to_excel_named(combinations, output_name)
+
+    if write_raw_combinations:
+        for comb_index in range(len(combination_photometry_data)):
+            comb_name = str(combinations[comb_index][0]) + "_" + str(combinations[comb_index][1])
+            to_excel_named(transpose(combination_photometry_data[comb_index]), comb_name)
 
     return combination_means, combination_ses
 
